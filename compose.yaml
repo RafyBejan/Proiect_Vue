@@ -1,0 +1,36 @@
+services:
+  app:
+    build: .docker
+    stdin_open: true
+    tty: true
+    container_name: app.Proiect_An_Vue_API
+    environment:
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: true
+      CHOKIDAR_INTERVAL: 100
+    ports:
+       - "5173:5173"
+    volumes:
+      - .:/app
+      - /app/node_modules
+      - /app/.git/
+    working_dir: /app
+    user: root
+
+  api:
+     build: .docker/api
+     stdin_open: true
+     tty: true
+     container_name: api.Proiect_An_Vue_API
+     environment:
+      NODE_ENV: development
+      CHOKIDAR_USEPOLLING: true
+      CHOKIDAR_INTERVAL: 100
+     ports:
+      - "3000:3000"
+     volumes:
+      - ./api:/api
+      # exclude
+      # - /api/.git/
+     working_dir: /api
+     user: 1000:1000

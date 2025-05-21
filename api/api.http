@@ -1,0 +1,36 @@
+@mainUrl = http://localhost:3000/
+
+###
+# 
+GET {{mainUrl}}
+
+###
+#
+GET {{mainUrl}}/test
+
+###
+POST http://localhost:3000/api/products
+Content-Type: application/json
+
+{
+  "id": 5,
+  "name": "Produs Nou",
+  "price": 100
+}
+
+###
+GET http://localhost:3000/api/products
+content-type: application/json
+
+
+###
+POST http://localhost:3000/api/cart/clear
+
+
+###
+DELETE http://localhost:3000/api/cart/remove
+Content-Type: application/json
+
+{
+  "id": 5
+}
