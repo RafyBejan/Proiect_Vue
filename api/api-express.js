@@ -1,7 +1,10 @@
 import express from "express";
 import bodyParser from "body-parser";
-import { cartRouter } from "./routing/cart.router.js"; // Importă cartRouter
-import { generalRouter } from "./routing/general.router.js"; // Păstrează dacă este necesar
+import { cartRouter } from "./routing/cart.router.js"; 
+import { generalRouter } from "./routing/general.router.js"; 
+import { userRouter } from "./routing/user.router.js";
+import { cartItemRouter } from "./routing/cartitem.router.js";
+import { orderRouter } from "./routing/order.router.js";
 
 const api = express();
 const port = 3000;
@@ -21,6 +24,9 @@ api.use(bodyParser.json());
 
 api.use(generalRouter); 
 api.use("/api", cartRouter); 
+api.use("/api/user", userRouter);
+api.use("/api/cartitems", cartItemRouter);
+api.use("/api/orders", orderRouter);
 
 
 api.listen(port, () => {

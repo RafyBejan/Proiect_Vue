@@ -4,6 +4,7 @@ import Shop from "../views/Shop.vue";
 import AboutUs from "../views/AboutUs.vue"; 
 import Contact from "../views/Contact.vue"; 
 import LoginRegister from "../views/LoginRegister.vue"; 
+import Cart from "../components/Cart.vue";
 
 const routes = [
   {
@@ -17,20 +18,25 @@ const routes = [
     component: Shop,
   },
   {
-    path: "/AboutUs", 
+    path: "/about", 
     name: "AboutUs",
     component: AboutUs,
   },
   {
-    path: "/Contact", 
+    path: "/contact", 
     name: "Contact",
     component: Contact,
   
   },
   {
-    path: "/loginregister", 
+    path: "/loginRegister", 
     name: "LoginRegister",
     component: LoginRegister,
+  },
+  {
+    path: "/cart",
+    name: "Cart",
+    component: Cart,
   },
 ];
 

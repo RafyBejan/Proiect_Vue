@@ -1,6 +1,6 @@
 <template>
     <div class="container py-16">
-      <div class="w-10/12 grid grid-cols-3 gap-6 mx-auto justify-center">
+      <div class="w-full max-w-6xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mx-auto justify-center">
         <!-- single feature -->
         <div
           v-for="(feature, index) in features"

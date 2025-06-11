@@ -1,6 +1,6 @@
 <template>
     <div
-      class="bg-cover bg-no-repeat bg-center py-36"
+      class="bg-cover bg-no-repeat bg-center py-16 sm:py-24 md:py-36"
       :style="{ backgroundImage: `url(${bannerImage})` }"
     >
       <div class="container">

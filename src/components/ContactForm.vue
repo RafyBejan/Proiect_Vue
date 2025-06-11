@@ -1,23 +1,23 @@
 <template>
-    <section class="contact">
-      <h2>Contact Us</h2>
-      <form @submit.prevent="submitForm">
-        <div class="form-group">
-          <label for="name">Name</label>
-          <input type="text" id="name" v-model="formData.name" required />
-        </div>
-        <div class="form-group">
-          <label for="email">Email</label>
-          <input type="email" id="email" v-model="formData.email" required />
-        </div>
-        <div class="form-group">
-          <label for="message">Message</label>
-          <textarea id="message" v-model="formData.message" required></textarea>
-        </div>
-        <button type="submit">Send Message</button>
-      </form>
-    </section>
-  </template>
+  <section class="py-8 px-2 bg-gray-100 min-h-screen flex flex-col items-center">
+    <h2 class="text-2xl font-bold mb-6 text-center">Contact Us</h2>
+    <form @submit.prevent="submitForm" class="w-full max-w-md bg-white p-6 rounded shadow flex flex-col gap-4">
+      <div>
+        <label for="name" class="block mb-1 text-gray-700">Name</label>
+        <input type="text" id="name" v-model="formData.name" required class="input input-bordered w-full" />
+      </div>
+      <div>
+        <label for="email" class="block mb-1 text-gray-700">Email</label>
+        <input type="email" id="email" v-model="formData.email" required class="input input-bordered w-full" />
+      </div>
+      <div>
+        <label for="message" class="block mb-1 text-gray-700">Message</label>
+        <textarea id="message" v-model="formData.message" required class="input input-bordered w-full"></textarea>
+      </div>
+      <button type="submit" class="bg-primary text-white py-2 rounded hover:bg-pink-600 transition">Send Message</button>
+    </form>
+  </section>
+</template>
   
   <script>
   export default {

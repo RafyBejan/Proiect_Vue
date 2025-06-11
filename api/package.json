@@ -3,7 +3,10 @@
   "type": "module",
   "packageManager": "yarn@4.5.3",
   "dependencies": {
+    "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mysql2": "^3.14.1",
+    "sequelize": "^6.37.7"
   }
 }

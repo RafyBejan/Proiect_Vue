@@ -1,17 +1,16 @@
 <template>
   <nav class="bg-gray-800">
-    <div class="container flex">
+    <div class="container flex flex-wrap items-center justify-between py-2">
       <!-- All category -->
       <div
-        class="px-8 py-4 bg-primary flex items-center cursor-pointer relative group"
+        class="px-4 py-2 bg-primary flex items-center cursor-pointer relative group"
       >
         <span class="text-white">
           <i class="fas fa-bars"></i>
         </span>
-        <span class="capitalize ml-2 text-white">All categories</span>
-
+        <span class="capitalize ml-2 text-white hidden sm:inline">All categories</span>
         <div
-          class="absolute w-full left-0 top-full bg-white shadow-md py-3 divide-y divide-gray-300 divide-dashed opacity-0 group-hover:opacity-100 transition duration-300 invisible group-hover:visible"
+          class="absolute w-48 left-0 top-full bg-white shadow-md py-3 divide-y divide-gray-300 divide-dashed opacity-0 group-hover:opacity-100 transition duration-300 invisible group-hover:visible z-20"
         >
           <div
             v-for="(category, index) in categories"
@@ -27,21 +26,31 @@
           </div>
         </div>
       </div>
-      <!-- All category end -->
-
+      <!-- Hamburger button -->
+      <button
+        class="sm:hidden text-white text-2xl focus:outline-none"
+        @click="showMenu = !showMenu"
+      >
+        <i class="fas fa-bars"></i>
+      </button>
       <!-- Navbar links -->
-      <div class="flex items-center justify-between flex-grow pl-12">
-        <div class="flex items-center space-x-6 capitalize">
+      <div
+        :class="[
+          'w-full sm:flex sm:items-center sm:w-auto transition-all duration-300',
+          showMenu ? 'block' : 'hidden'
+        ]"
+      >
+        <div class="flex flex-col sm:flex-row sm:items-center sm:space-x-6 capitalize">
           <a
             v-for="(link, index) in navLinks"
             :key="index"
             :href="link.href"
-            class="text-gray-200 hover:text-white transition"
+            class="text-gray-200 hover:text-white transition py-2 sm:py-0 px-4 sm:px-0"
           >
             {{ link.label }}
           </a>
         </div>
-        <a href="#" class="text-gray-200 hover:text-white transition"
+        <a href="#" class="text-gray-200 hover:text-white transition block sm:inline-block py-2 sm:py-0 px-4 sm:px-0"
           >Login/Register</a
         >
       </div>
@@ -54,6 +63,7 @@ export default {
   name: "Navbar",
   data() {
     return {
+      showMenu: false,
       categories: [
         {
           name: "Piese Biciclete",
@@ -80,7 +90,7 @@ export default {
         { label: "Shop", href: "/shop" },
         { label: "About us", href: "/about" },
         { label: "Contact", href: "/contact" },
-        {label:"LoginRegister",href:"/LoginRegister"},
+        { label: "LoginRegister", href: "/loginRegister" },
       ],
     };
   },

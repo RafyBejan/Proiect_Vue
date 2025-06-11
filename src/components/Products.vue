@@ -4,7 +4,7 @@
     <h2 class="text-2xl font-medium text-gray-800 uppercase mb-6">Top New Arrival</h2>
 
     <!-- Grilă de produse -->
-    <div class="grid grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
       <!-- Produs unic -->
       <div
         v-for="(product, index) in filteredProducts" 
@@ -73,7 +73,7 @@
 
 <script>
 export default {
-  name: "Products", // Numele componentei
+  name: "Products", 
   data() {
     return {
       products: [

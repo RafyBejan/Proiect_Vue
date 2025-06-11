@@ -1,44 +1,73 @@
 import { Router } from "express";
 import {
   getProducts,
-  addToCart,
-  removeFromCart,
-  clearCart,
-  getCart,
+  addProduct,
+  deleteProduct,
+  updateProduct,
 } from "../service/cart.service.js";
 
 export const cartRouter = Router();
 
-cartRouter.get("/view", (req, res) => {
-  res.json(getProducts());
+
+
+cartRouter.get("/view", async (req, res) => {
+  const filter = {};
+  if (req.query.category) filter.category = req.query.category;
+
+  let sort = [];
+  if (req.query.sort === "price-asc") sort = ["price", "ASC"];
+  if (req.query.sort === "price-desc") sort = ["price", "DESC"];
+
+  try {
+    const products = await getProducts(filter, sort);
+    res.json(products);
+  } catch (err) {
+    res.status(500).send("Eroare la obținerea produselor");
+  }
 });
 
-cartRouter.post("/products", (req, res) => {
-  const { id, name, price } = req.body;
-  if (!id || !name || !price) {   
+
+cartRouter.post("/products", async (req, res) => {
+  const { name, price, category } = req.body;
+  if (!name || !price) {
     res.status(400).send("Produs invalid");
     return;
   }
-  const newProduct = { id, name, price };
-  const products = getProducts(); 
-  products.push(newProduct);
-  res.status(201).json(newProduct);
-});
-
-
-cartRouter.delete("/cart/remove", (req, res) => {
-  const { id } = req.body;
-  if (!id) {
-    res.status(400).send("ID-ul produsului este necesar");
-    return;
+  try {
+    const product = await addProduct({ name, price, category });
+    res.status(201).json(product);
+  } catch (err) {
+    res.status(500).send("Eroare la adăugarea produsului");
   }
-  removeFromCart(id);
-  res.send("Produs șters din coș și din lista de produse");
 });
 
 
-cartRouter.post("/cart/clear", (req, res) => {
-  clearCart();
-  res.send("Coșul a fost golit");
+cartRouter.delete("/products/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  try {
+    const deleted = await deleteProduct(id);
+    if (!deleted) {
+      res.status(404).send("Produsul nu a fost gasit");
+      return;
+    }
+    res.send("Produs sters");
+  } catch (err) {
+    res.status(500).send("Eroare la ștergerea produsului");
+  }
 });
 
+
+cartRouter.put("/products/:id", async (req, res) => {
+  const id = Number(req.params.id);
+  const { name, price, category } = req.body;
+  try {
+    const [updated] = await updateProduct(id, { name, price, category });
+    if (!updated) {
+      res.status(404).send("Produsul nu a fost gasit");
+      return;
+    }
+    res.send("Produs actualizat");
+  } catch (err) {
+    res.status(500).send("Eroare la actualizarea produsului");
+  }
+});

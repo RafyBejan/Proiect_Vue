@@ -1,13 +1,13 @@
 <template>
   <header class="py-4 shadow-sm bg-white">
-    <div class="container flex items-center justify-between">
+    <div class="container flex flex-col md:flex-row items-center justify-between gap-4">
       <!-- Logo -->
       <a href="#">
         <img src="/vite.svg" alt="Logo" class="h-8" />
       </a>
 
       <!-- Searchbar -->
-      <div class="w-full max-w-xl relative flex">
+      <div class="w-full max-w-xl relative flex order-3 md:order-none">
         <span class="absolute left-4 top-3 text-lg text-gray-400">
           <i class="fas fa-search"></i>
         </span>
@@ -24,9 +24,11 @@
       </div>
 
       <!-- Icons -->
-      <div class="flex items-center space-x-4">
+      <div class="flex items-center space-x-4 order-2 md:order-none">
         <IconItem icon="far fa-heart" label="Wishlist" count="8" />
+        <router-link to="/cart">
         <IconItem icon="far fa-shopping-bag" label="Cart" count="8" />
+        </router-link>
         <IconItem icon="far fa-user" label="Account" />
       </div>
     </div>

@@ -1,7 +1,7 @@
 <template>
-  <div class="flex gap-6">
+  <div class="flex flex-col md:flex-row gap-6">
     <!-- Sidebar (Bara laterală pentru filtre) -->
-    <div class="bg-white px-4 pb-6 shadow rounded w-[1000px] max-h-[1000vh] overflow-y-auto">
+    <div class=" bg-white px-4 pb-6 shadow rounded w-72 max-h-[1000vh] overflow-y-auto">
       <!-- Conținutul sidebar-ului -->
       <div class="divide-y divide-gray-300 space-y-5">
         <!-- Filtru pentru categorii -->
@@ -33,7 +33,7 @@
     </div>
 
     
-    <div class="w-3/4">
+    <div class="w-full md:w-3/4">
       <Products />
     </div>
   </div>
@@ -41,6 +41,7 @@
 
 <script>
 import FilterSection from "./FilterSection.vue";
+
 
 export default {
   components: {

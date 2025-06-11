@@ -1,33 +1,24 @@
 <template>
-  <div>
-    <div v-if="!products.length" class="text-center text-gray-500">
-      Nu există produse disponibile.
-    </div>
-    <div v-else class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-      <div
-        v-for="product in products"
-        :key="product.id"
-        class="bg-white shadow-lg rounded-lg overflow-hidden group transform transition-all duration-300 hover:scale-105"
-      >
-        <div class="relative w-full h-80">
-          <img
-            :src="product.image || 'https://via.placeholder.com/150'"
-            :alt="product.name"
-            class="w-full h-full object-cover"
-          />
-        </div>
-        <div class="p-4">
-          <h4 class="uppercase font-medium text-lg mb-2 text-gray-800">
-            {{ product.name }}
-          </h4>
-          <p class="text-lg text-primary font-semibold">{{ product.price }} RON</p>
-          <button
-            @click="$emit('add-to-cart', product)"
-            class="block w-full py-2 text-center text-white bg-primary rounded hover:bg-opacity-90"
-          >
-            Add to cart
-          </button>
-        </div>
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+    <div
+      v-for="product in products"
+      :key="product.id"
+      class="bg-white rounded-lg shadow-md flex flex-col justify-between p-4"
+    >
+      <img
+        :src="product.image || 'https://via.placeholder.com/150'"
+        :alt="product.name"
+        class="w-full h-40 object-cover rounded-t-lg mb-4"
+      />
+      <div class="flex-1 flex flex-col justify-between">
+        <h3 class="text-lg font-semibold mb-2">{{ product.name }}</h3>
+        <p class="text-primary font-bold mb-2">{{ product.price }} RON</p>
+        <button
+          class="bg-primary text-white py-2 px-4 rounded hover:bg-pink-600 transition w-full"
+          @click="$emit('add-to-cart', product)"
+        >
+          Add to cart
+        </button>
       </div>
     </div>
   </div>
