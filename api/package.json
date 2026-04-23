@@ -1,11 +1,18 @@
 {
   "name": "proeict-an-vue-api",
   "type": "module",
-  "packageManager": "yarn@4.5.3",
+  "scripts": {
+    "start": "node api-express.js",
+    "dev": "node --watch api-express.js",
+    "db:sync": "node db-sync.js"
+  },
   "dependencies": {
     "bcryptjs": "^3.0.2",
     "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
     "express": "^5.1.0",
+    "express-rate-limit": "^7.4.1",
+    "jsonwebtoken": "^9.0.2",
     "mysql2": "^3.14.1",
     "sequelize": "^6.37.7"
   }

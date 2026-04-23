@@ -12,21 +12,23 @@
 
 <script setup>
 import { onMounted } from "vue";
+import { storeToRefs } from "pinia";
 import { useCartItemStore } from "../stores/cartItem";
 import { useUserStore } from "../stores/user";
 
 const cartItemStore = useCartItemStore();
 const userStore = useUserStore();
 
+const { items: cartItems } = storeToRefs(cartItemStore);
 
 onMounted(() => {
-  if( userStore.user) {
+  if (userStore.user) {
     cartItemStore.fetchCart(userStore.user.id);
   }
 });
 
-const cartItems = cartItemStore.items;
 function remove(id) {
-  cartItemStore.removeFromCart(id, userId);
+  if (!userStore.user) return;
+  cartItemStore.removeFromCart(id, userStore.user.id);
 }
 </script>

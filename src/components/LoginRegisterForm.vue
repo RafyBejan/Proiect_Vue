@@ -16,7 +16,9 @@
       <form @submit.prevent="handleLogin" class="flex flex-col gap-3">
         <input type="email" placeholder="Email" v-model="loginData.email" required class="input input-bordered" />
         <input type="password" placeholder="Password" v-model="loginData.password" required class="input input-bordered" />
-        <button type="submit" class="bg-primary text-white py-2 rounded hover:bg-pink-600 transition">Login</button>
+        <button type="submit" class="bg-primary text-white py-2 rounded hover:bg-pink-600 transition" :disabled="loading">
+          {{ loading ? "..." : "Login" }}
+        </button>
       </form>
     </div>
     <div v-if="activeTab === 'register'" class="w-full max-w-xs bg-white p-6 rounded shadow">
@@ -24,108 +26,130 @@
       <form @submit.prevent="handleRegister" class="flex flex-col gap-3">
         <input type="text" placeholder="Full Name" v-model="registerData.name" required class="input input-bordered" />
         <input type="email" placeholder="Email" v-model="registerData.email" required class="input input-bordered" />
-        <input type="password" placeholder="Password" v-model="registerData.password" required class="input input-bordered" />
-        <button type="submit" class="bg-primary text-white py-2 rounded hover:bg-pink-600 transition">Register</button>
+        <input
+          type="password"
+          placeholder="Password (min. 6 caractere)"
+          v-model="registerData.password"
+          required
+          minlength="6"
+          class="input input-bordered"
+        />
+        <button type="submit" class="bg-primary text-white py-2 rounded hover:bg-pink-600 transition" :disabled="loading">
+          {{ loading ? "..." : "Register" }}
+        </button>
       </form>
     </div>
+    <p v-if="errorMessage" class="mt-4 text-red-600 text-sm">{{ errorMessage }}</p>
   </section>
 </template>
-  
-  <script>
-  import { useUserStore } from '../stores/user';
 
+<script>
+import { useUserStore } from "../stores/user";
 
-  export default {
-    name: "LoginRegister",
-    data() {
-      return {
-        activeTab: "login",
-        loginData: {
-          email: "",
-          password: "",
-        },
-        registerData: {
-          name: "",
-          email: "",
-          password: "",
-        },
-      };
-    },
-      methods: {
-  async handleLogin() {
-    const userStore = useUserStore();
-    try {
-      await userStore.login(this.loginData.email, this.loginData.password);
-      alert(`Bun venit, ${userStore.user.name}!`);
-      this.$router.push("/shop");
-    } catch (err) {
-      alert("Email sau parolă greșită!");
-    }
+export default {
+  name: "LoginRegister",
+  data() {
+    return {
+      activeTab: "login",
+      loading: false,
+      errorMessage: "",
+      loginData: {
+        email: "",
+        password: "",
+      },
+      registerData: {
+        name: "",
+        email: "",
+        password: "",
+      },
+    };
   },
-  async handleRegister() {
-    const userStore = useUserStore();
-    try {
-      await userStore.register(this.registerData.name, this.registerData.email, this.registerData.password);
-      alert(`Cont creat pentru ${res.data.name}!`);
-      this.$router.push("/shop");
-    } catch (err) {
-      alert("Eroare la înregistrare!");
-    }
-  }, 
+  methods: {
+    async handleLogin() {
+      const userStore = useUserStore();
+      this.errorMessage = "";
+      this.loading = true;
+      try {
+        await userStore.login(this.loginData.email, this.loginData.password);
+        alert(`Bun venit, ${userStore.user.name}!`);
+        this.$router.push("/shop");
+      } catch (err) {
+        this.errorMessage = err?.response?.data?.message || "Email sau parolă greșită!";
+      } finally {
+        this.loading = false;
+      }
+    },
+    async handleRegister() {
+      const userStore = useUserStore();
+      this.errorMessage = "";
+      this.loading = true;
+      try {
+        await userStore.register(
+          this.registerData.name,
+          this.registerData.email,
+          this.registerData.password
+        );
+        alert(`Cont creat pentru ${userStore.user.name}!`);
+        this.$router.push("/shop");
+      } catch (err) {
+        this.errorMessage = err?.response?.data?.message || "Eroare la înregistrare!";
+      } finally {
+        this.loading = false;
+      }
+    },
+  },
+};
+</script>
+
+<style scoped>
+.login-register {
+  padding: 2rem;
+  background-color: #f5f5f5;
 }
-  };
-  </script>
-  
-  <style scoped>
-  .login-register {
-    padding: 2rem;
-    background-color: #f5f5f5;
-  }
-  .login-register h2 {
-    text-align: center;
-    margin-bottom: 1rem;
-    color: #333;
-  }
-  .tabs {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 1rem;
-  }
-  .tabs button {
-    margin: 0 0.5rem;
-    padding: 0.5rem 1rem;
-    border: none;
-    cursor: pointer;
-    background-color: #ddd;
-    color: #333;
-  }
-  .tabs button.active {
-    background-color: #ff4c4c;
-    color: white;
-  }
-  .form {
-    max-width: 400px;
-    margin: 0 auto;
-    text-align: center;
-  }
-  .form input {
-    width: 100%;
-    padding: 0.5rem;
-    margin: 0.5rem 0;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-  }
-  .form button {
-    width: 100%;
-    padding: 0.7rem;
-    background-color: #ff4c4c;
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  .form button:hover {
-    background-color: #e63939;
-  }
-  </style>
-  
+.login-register h2 {
+  text-align: center;
+  margin-bottom: 1rem;
+  color: #333;
+}
+.tabs {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+.tabs button {
+  margin: 0 0.5rem;
+  padding: 0.5rem 1rem;
+  border: none;
+  cursor: pointer;
+  background-color: #ddd;
+  color: #333;
+}
+.tabs button.active {
+  background-color: #ff4c4c;
+  color: white;
+}
+.form {
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+.form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin: 0.5rem 0;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+.form button {
+  width: 100%;
+  padding: 0.7rem;
+  background-color: #ff4c4c;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+.form button:hover {
+  background-color: #e63939;
+}
+</style>
