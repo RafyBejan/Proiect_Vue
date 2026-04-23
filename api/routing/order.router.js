@@ -1,16 +1,15 @@
 import { Router } from "express";
 import { placeOrder } from "../service/cart.service.js";
+import { requireAuth } from "../middleware/auth.js";
 
 export const orderRouter = Router();
 
-orderRouter.post("/", async (req, res) => {
-  const { userId } = req.body;
-  if (!userId) return res.status(400).send("Lipsă userId");
-
+orderRouter.post("/", requireAuth, async (req, res) => {
   try {
-    const result = await placeOrder(userId);
-    res.status(201).json({ message: "Comandă plasată!", orderId: result.orderId });
+    const result = await placeOrder(req.user.id);
+    res.status(201).json({ message: "Comanda plasata!", orderId: result.orderId });
   } catch (err) {
-    res.status(500).send("Eroare la plasarea comenzii: " + err.message);
+    console.error("Place order error:", err);
+    res.status(500).json({ message: "Eroare la plasarea comenzii" });
   }
 });

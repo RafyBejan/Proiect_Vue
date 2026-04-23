@@ -1,16 +1,15 @@
 import { Sequelize, DataTypes } from "sequelize";
 
-
 const db = {
-  NAME: "Proiect_An_Vue_API",
-  USERNAME: "Proiect_An_Vue_API",
-  PASSWORD: "Proiect_An_Vue_API",
+  NAME: process.env.DB_NAME || "Proiect_An_Vue_API",
+  USERNAME: process.env.DB_USER || "Proiect_An_Vue_API",
+  PASSWORD: process.env.DB_PASSWORD || "Proiect_An_Vue_API",
   options: {
     dialect: "mysql",
     timezone: "+00:00",
-    host: "mysql.Proiect_An_Vue_API", 
-    port: 3306,
-    logging: str => console.log(str),
+    host: process.env.DB_HOST || "mysql.Proiect_An_Vue_API",
+    port: Number(process.env.DB_PORT) || 3306,
+    logging: process.env.NODE_ENV === "production" ? false : (str) => console.log(str),
   },
 };
 
@@ -23,7 +22,7 @@ export const Product = sequelize.define(
     name: {
       type: DataTypes.STRING,
       allowNull: false,
-      validate: { notEmpty: true }, 
+      validate: { notEmpty: true },
     },
     price: {
       type: DataTypes.FLOAT,
@@ -66,6 +65,7 @@ export const User = sequelize.define(
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
+        validate: { isEmail: true },
     },
     password: {
         type: DataTypes.STRING,

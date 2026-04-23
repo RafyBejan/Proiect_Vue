@@ -1,66 +1,59 @@
 import { defineStore } from "pinia";
-import axios from "axios";
+import { api } from "../api";
 
 export const useCartStore = defineStore("cart", {
   state: () => ({
     products: [],
-    cart: [], 
+    cart: [],
   }),
   actions: {
-    
-    async fetchProducts({ category = "", sort = ""} = {}) { 
-        try {
-          let url = "http://localhost:3000/api/view";
-          const params = [];
-          if(category) params.push(`category=${encodeURIComponent(category)}`);
-          if(sort) params.push(`sort=${encodeURIComponent(sort)}`);
-          if(params.length) url += "?" + params.join("&");
+    async fetchProducts({ category = "", sort = "" } = {}) {
+      try {
+        const params = {};
+        if (category) params.category = category;
+        if (sort) params.sort = sort;
 
-          const response = await axios.get(url);
-          this.products = response.data;
-        } catch (error) {
-          console.error("Eroare la fetch-ul produselor:", error);
-        }
-      },
+        const response = await api.get("/api/view", { params });
+        this.products = response.data;
+      } catch (error) {
+        console.error("Eroare la fetch-ul produselor:", error);
+      }
+    },
 
-  
     async addProduct(product) {
-    try {
-      await axios.post("http://localhost:3000/api/products", product, {
-        headers: { "Content-Type": "application/json" }
-      });
-      await this.fetchProducts();
-    } catch (error) {
-      console.error("Eroare la adăugarea produsului:", error);
-    }
-  },
-    
-  async deleteProduct(productId) {
-    try {
-      await axios.delete(`http://localhost:3000/api/products/${productId}`);
-      await this.fetchProducts();
-    } catch (error) {
-      console.error("Eroare la ștergerea produsului:", error);
-    }
-  },
-   
+      try {
+        await api.post("/api/products", product);
+        await this.fetchProducts();
+      } catch (error) {
+        console.error("Eroare la adăugarea produsului:", error);
+      }
+    },
+
+    async deleteProduct(productId) {
+      try {
+        await api.delete(`/api/products/${productId}`);
+        await this.fetchProducts();
+      } catch (error) {
+        console.error("Eroare la ștergerea produsului:", error);
+      }
+    },
+
     async updateProduct(product) {
-    try {
-      await axios.put(
-        `http://localhost:3000/api/products/${product.id}`,
-        { name: product.name, price: product.price },
-        { headers: { "Content-Type": "application/json" } }
-      );
-      await this.fetchProducts();
-    } catch (error) {
-      console.error("Eroare la actualizarea produsului:", error);
-    }
-  },
+      try {
+        await api.put(`/api/products/${product.id}`, {
+          name: product.name,
+          price: product.price,
+        });
+        await this.fetchProducts();
+      } catch (error) {
+        console.error("Eroare la actualizarea produsului:", error);
+      }
+    },
 
     async clearCart() {
       this.cart = [];
       try {
-        await axios.post("http://localhost:3000/api/cart/clear");
+        await api.post("/api/cart/clear");
       } catch (error) {
         console.error("Eroare la golirea coșului:", error);
       }

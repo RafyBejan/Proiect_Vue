@@ -26,7 +26,7 @@ export const updateProduct = async (id, data) => {
 export const placeOrder = async (userId) => {
   const t = await sequelize.transaction();
   try {
-     const cartItems = await CartItem.findAll({ where: { UserId: userId }, include: [Product], transactions: t });
+     const cartItems = await CartItem.findAll({ where: { UserId: userId }, include: [Product], transaction: t });
      if(!cartItems.length) throw new Error("Cosul este gol");
 
      const total = cartItems.reduce((sum, item) => sum + item.quantity * item.Product.price, 0);
